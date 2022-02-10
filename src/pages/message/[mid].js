@@ -3,8 +3,8 @@ import useSWR from "swr";
 import Spinner from "../../components/spinner";
 
 export default function Message() {
-  let { query } = useRouter();
-  let { data } = useSWR(`/api/messages/${query.mid}`);
+  let router = useRouter();
+  let { data } = useSWR(`/api/messages/${router.query.mid}`);
 
   return (
     <div className="w-full p-8 overflow-y-scroll">

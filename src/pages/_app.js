@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { SWRConfig } from "swr";
 import "tailwindcss/tailwind.css";
@@ -6,10 +7,13 @@ import "../mirage";
 
 export default function App(props) {
   let [ready, set] = useState(false);
+  let router = useRouter();
 
   useEffect(() => {
-    set(true);
-  }, []);
+    if (router.isReady) {
+      set(true);
+    }
+  }, [router.isReady]);
 
   return (
     ready && (

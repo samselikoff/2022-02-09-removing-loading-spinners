@@ -9,10 +9,10 @@ let titles = [
   "Goth air plant prism",
   "Retro mumblecore roof party",
   "Raclette aesthetic",
-  "Tofu put a bird on it yuccie polaroid",
-  "8-bit XOXO hammock glossier flannel",
+  "Tofu put a bird on it",
+  "8-bit XOXO polaroid",
   "Subway flannel mustache",
-  "Bicycle rights before they sold out raw denim",
+  "Bicycle rights before they sold out",
 ];
 let messages = [...Array(10).keys()].map((_, i) => ({
   id: i + 1,
@@ -42,7 +42,7 @@ function makeServer({ environment = "test" } = {}) {
         (schema, request) => {
           return { message: messages.find((m) => m.id === +request.params.id) };
         },
-        { timing: 1100 }
+        { timing: 750 }
       );
 
       this.namespace = "";
@@ -52,7 +52,7 @@ function makeServer({ environment = "test" } = {}) {
 
   // Don't log passthrough
   server.pretender.passthroughRequest = () => {};
-  server.logging = false;
+  // server.logging = false;
 
   return server;
 }

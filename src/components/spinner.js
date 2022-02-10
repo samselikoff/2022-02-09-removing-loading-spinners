@@ -1,12 +1,17 @@
-export default function Spinner(props) {
+export default function Spinner({ size = "m", ...rest }) {
+  let sizes = {
+    s: 12,
+    m: 18,
+  };
+
   return (
     <div className="flex items-center justify-center w-full">
       <svg
         className="text-zinc-300"
         viewBox="0 0 2400 2400"
-        width={18}
-        height={18}
-        {...props}
+        width={sizes[size]}
+        height={sizes[size]}
+        {...rest}
       >
         <g
           strokeWidth={200}
