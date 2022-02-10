@@ -1,0 +1,26 @@
+{
+  "name": "2022-02-09-next-no-loading-spinners-on-navigate",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "chance": "^1.1.8",
+    "miragejs": "^0.1.43",
+    "next": "^12.0.10",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-error-boundary": "^3.1.4",
+    "swr": "^1.2.1"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.1",
+    "eslint": "^8.8.0",
+    "eslint-config-next": "^12.0.10",
+    "postcss": "^8.4.6",
+    "tailwindcss": "^3.0.19"
+  }
+}
