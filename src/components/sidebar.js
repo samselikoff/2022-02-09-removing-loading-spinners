@@ -1,7 +1,9 @@
-import useSWR from "swr";
+import useSWR, { mutate, useSWRConfig } from "swr";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Spinner from "./spinner";
+import { messageUrl } from "../pages/message/[mid]";
+import { useState } from "react";
 
 export function Sidebar() {
   let { data } = useSWR(`/api/messages`);
@@ -30,19 +32,39 @@ export function Sidebar() {
 function MessageLink({ message }) {
   let router = useRouter();
   let active = router.asPath === `/message/${message.id}`;
+  let { fetcher } = useSWRConfig();
+  let url = messageUrl(message.id);
+  let href = `/message/${message.id}`;
+  let [pending, setPending] = useState(false);
 
   return (
-    <Link href={`/message/${message.id}`}>
+    <Link href={href}>
       <a
+        onClick={async (e) => {
+          if (e.ctrlKey || e.metaKey) return;
+
+          e.preventDefault();
+
+          setPending(true);
+          await mutate(url, async (current) => current ?? fetcher(url));
+          setPending(false);
+          router.push(href);
+        }}
         className={`
           ${
             active
               ? "bg-blue-600 text-blue-50"
               : "hover:bg-zinc-700/50 text-white"
           } 
-          block px-2 py-2 rounded text-sm truncate`}
+          block px-2 py-2 pr-4 rounded text-sm truncate relative`}
       >
         {message.title}
+
+        {pending && (
+          <span className="absolute inset-y-0 right-0 flex pr-1">
+            <Spinner size="s" />
+          </span>
+        )}
       </a>
     </Link>
   );

@@ -2,9 +2,11 @@ import { useRouter } from "next/router";
 import useSWR from "swr";
 import Spinner from "../../components/spinner";
 
+export const messageUrl = (messageId) => `/api/messages/${messageId}`;
+
 export default function Message() {
   let router = useRouter();
-  let { data } = useSWR(`/api/messages/${router.query.mid}`);
+  let { data } = useSWR(messageUrl(router.query.mid));
 
   return (
     <div className="w-full p-8 overflow-y-scroll">
