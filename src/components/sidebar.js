@@ -31,7 +31,7 @@ export function Sidebar() {
 function MessageLink({ message }) {
   let router = useRouter()
   let active = router.asPath === `/message/${message.id}`
-  // eger prefetch
+  // eager prefetch
   // this hook will do prefetch here and wont cause rerender
   // https://swr.vercel.app/docs/advanced/performance#dependency-collection
   useMessage(message.id)
