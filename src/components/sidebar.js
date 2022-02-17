@@ -1,13 +1,12 @@
-import useSWR, { mutate, useSWRConfig } from "swr";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import Spinner from "./spinner";
-import { messageUrl } from "../pages/message/[mid]";
-import { useState } from "react";
-
+import useSWR from "swr"
+import Link from "next/link"
+import { useRouter } from "next/router"
+import Spinner from "./spinner"
+import { useMessage } from "./useMessage"
+import { useState } from 'react'
 export function Sidebar() {
-  let { data } = useSWR(`/api/messages`);
-
+  let { data } = useSWR(`/api/messages`)
+  
   return (
     <div className="flex flex-col border-r border-zinc-700">
       <Link href="/">
@@ -26,30 +25,25 @@ export function Sidebar() {
         )}
       </div>
     </div>
-  );
+  )
 }
 
 function MessageLink({ message }) {
-  let router = useRouter();
-  let active = router.asPath === `/message/${message.id}`;
-  let { fetcher } = useSWRConfig();
-  let url = messageUrl(message.id);
-  let href = `/message/${message.id}`;
-  let [pending, setPending] = useState(false);
+  let router = useRouter()
+  let active = router.asPath === `/message/${message.id}`
+  // eger prefetch
+  // this hook will do prefetch here and wont cause rerender
+  // https://swr.vercel.app/docs/advanced/performance#dependency-collection
+  useMessage(message.id)
+
+  // lazy prefetch
+  // let [on, toggle] = useState(false)
+  //useMessage(on ? message.id : null)
 
   return (
-    <Link href={href}>
+    <Link href={`/message/${message.id}`}>
       <a
-        onClick={async (e) => {
-          if (e.ctrlKey || e.metaKey) return;
-
-          e.preventDefault();
-
-          setPending(true);
-          await mutate(url, async (current) => current ?? fetcher(url));
-          setPending(false);
-          router.push(href);
-        }}
+        // onMouseEnter={() => toggle(true)}
         className={`
           ${
             active
@@ -59,13 +53,7 @@ function MessageLink({ message }) {
           block px-2 py-2 pr-4 rounded text-sm truncate relative`}
       >
         {message.title}
-
-        {pending && (
-          <span className="absolute inset-y-0 right-0 flex pr-1">
-            <Spinner size="s" />
-          </span>
-        )}
       </a>
     </Link>
-  );
+  )
 }
